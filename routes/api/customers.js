@@ -12,7 +12,9 @@ router.get("/getcustomerslist", (req, res) => {
           customerdatanotavailable: " No customer information in the database"
         });
       } else {
-        return user;
+        return res;
+        //return json.parse(user);
+        // console.log("api" + user);
       }
     })
     .catch(err => console.log(err));

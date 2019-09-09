@@ -68,6 +68,7 @@ export const logoutUser = () => dispatch => {
 
 // Get the list of all the customers
 export const getCustomersList = () => dispatch => {
+  console.log("here" + dispatch);
   axios.get("/api/customers/getcustomerslist").then(res =>
     dispatch({
       type: GET_CUSTOMER_LIST,
