@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { logoutUser, getCustomersList } from "../../actions/authActions";
+import { logoutUser } from "../../actions/authActions";
 
 class Dashboard extends Component {
   onLogoutClick = e => {
@@ -12,7 +12,7 @@ class Dashboard extends Component {
   // utilises getCustomerList from actions -> authActions
   getCustomersListClick = e => {
     e.preventDefault();
-    this.props.getCustomersList();
+    // this.props.getCustomersList();
     this.props.history.push("/dashboard/CustomersView");
   };
 
@@ -69,5 +69,5 @@ const mapStateToProps = state => ({
 });
 export default connect(
   mapStateToProps,
-  { logoutUser, getCustomersList }
+  { logoutUser }
 )(Dashboard);

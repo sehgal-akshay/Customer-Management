@@ -1,6 +1,7 @@
 import axios from "axios";
 import setAuthToken from "../utils/setAuthToken";
 import jwt_decode from "jwt-decode";
+import store from "../../src/store";
 import {
   GET_ERRORS,
   GET_CUSTOMER_LIST,
@@ -14,7 +15,7 @@ export const registerUser = (userData, history) => dispatch => {
     .post("/api/users/register", userData)
     .then(res => history.push("/login")) // re-direct to login on successful register
     .catch(err =>
-      dispatch({
+      store.dispatch({
         type: GET_ERRORS,
         payload: err.response.data
       })
@@ -68,16 +69,19 @@ export const logoutUser = () => dispatch => {
 
 // Get the list of all the customers
 export const getCustomersList = () => dispatch => {
-  console.log("here" + dispatch);
-  axios.get("/api/customers/getcustomerslist").then(res =>
-    dispatch({
-      type: GET_CUSTOMER_LIST,
-      payload: res.json()
-    }).catch(err =>
-      dispatch({
-        type: GET_ERRORS,
-        payload: err.response.data
-      })
-    )
-  );
+  axios.get("/api/customers/getcustomerslist").then(res => {
+    // Save to localStorage
+    const { token } = res.data;
+    // Decode token to get user data
+    const decoded = jwt_decode(token);
+    // Set current user
+    dispatch(getCustomerList(decoded));
+    return decoded;
+  });
+};
+export const getCustomerList = decoded => {
+  return {
+    type: GET_CUSTOMER_LIST,
+    payload: decoded
+  };
 };
